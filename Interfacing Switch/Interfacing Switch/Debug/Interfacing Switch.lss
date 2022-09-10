@@ -1,0 +1,362 @@
+
+Interfacing Switch.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000021e  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000272  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  00000272  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000002a4  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000030  00000000  00000000  000002e0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000a42  00000000  00000000  00000310  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000005d7  00000000  00000000  00000d52  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000039f  00000000  00000000  00001329  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000044  00000000  00000000  000016c8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000350  00000000  00000000  0000170c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000510  00000000  00000000  00001a5c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000020  00000000  00000000  00001f6c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 fc 00 	call	0x1f8	; 0x1f8 <main>
+  64:	0c 94 0d 01 	jmp	0x21a	; 0x21a <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <downwardLED>:
+#define F_CPU 8000000UL
+#include <util/delay.h>
+
+void downwardLED()
+{
+	PORTC = 0b00000000; // here all pins in PORTC is at 0V
+  6c:	15 ba       	out	0x15, r1	; 21
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  6e:	2f ef       	ldi	r18, 0xFF	; 255
+  70:	80 e7       	ldi	r24, 0x70	; 112
+  72:	92 e0       	ldi	r25, 0x02	; 2
+  74:	21 50       	subi	r18, 0x01	; 1
+  76:	80 40       	sbci	r24, 0x00	; 0
+  78:	90 40       	sbci	r25, 0x00	; 0
+  7a:	e1 f7       	brne	.-8      	; 0x74 <downwardLED+0x8>
+  7c:	00 c0       	rjmp	.+0      	; 0x7e <downwardLED+0x12>
+  7e:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00000001; // here only PC0 is at +5V rest at 0V
+  80:	81 e0       	ldi	r24, 0x01	; 1
+  82:	85 bb       	out	0x15, r24	; 21
+  84:	2f ef       	ldi	r18, 0xFF	; 255
+  86:	80 e7       	ldi	r24, 0x70	; 112
+  88:	92 e0       	ldi	r25, 0x02	; 2
+  8a:	21 50       	subi	r18, 0x01	; 1
+  8c:	80 40       	sbci	r24, 0x00	; 0
+  8e:	90 40       	sbci	r25, 0x00	; 0
+  90:	e1 f7       	brne	.-8      	; 0x8a <downwardLED+0x1e>
+  92:	00 c0       	rjmp	.+0      	; 0x94 <downwardLED+0x28>
+  94:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00000010; // here only PC1 is at +5V rest at 0V
+  96:	82 e0       	ldi	r24, 0x02	; 2
+  98:	85 bb       	out	0x15, r24	; 21
+  9a:	2f ef       	ldi	r18, 0xFF	; 255
+  9c:	80 e7       	ldi	r24, 0x70	; 112
+  9e:	92 e0       	ldi	r25, 0x02	; 2
+  a0:	21 50       	subi	r18, 0x01	; 1
+  a2:	80 40       	sbci	r24, 0x00	; 0
+  a4:	90 40       	sbci	r25, 0x00	; 0
+  a6:	e1 f7       	brne	.-8      	; 0xa0 <downwardLED+0x34>
+  a8:	00 c0       	rjmp	.+0      	; 0xaa <downwardLED+0x3e>
+  aa:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00000100; // here only PC2 is at +5V rest at 0V
+  ac:	84 e0       	ldi	r24, 0x04	; 4
+  ae:	85 bb       	out	0x15, r24	; 21
+  b0:	2f ef       	ldi	r18, 0xFF	; 255
+  b2:	80 e7       	ldi	r24, 0x70	; 112
+  b4:	92 e0       	ldi	r25, 0x02	; 2
+  b6:	21 50       	subi	r18, 0x01	; 1
+  b8:	80 40       	sbci	r24, 0x00	; 0
+  ba:	90 40       	sbci	r25, 0x00	; 0
+  bc:	e1 f7       	brne	.-8      	; 0xb6 <downwardLED+0x4a>
+  be:	00 c0       	rjmp	.+0      	; 0xc0 <downwardLED+0x54>
+  c0:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00001000; // here only PC3 is at +5V rest at 0V
+  c2:	88 e0       	ldi	r24, 0x08	; 8
+  c4:	85 bb       	out	0x15, r24	; 21
+  c6:	2f ef       	ldi	r18, 0xFF	; 255
+  c8:	80 e7       	ldi	r24, 0x70	; 112
+  ca:	92 e0       	ldi	r25, 0x02	; 2
+  cc:	21 50       	subi	r18, 0x01	; 1
+  ce:	80 40       	sbci	r24, 0x00	; 0
+  d0:	90 40       	sbci	r25, 0x00	; 0
+  d2:	e1 f7       	brne	.-8      	; 0xcc <downwardLED+0x60>
+  d4:	00 c0       	rjmp	.+0      	; 0xd6 <downwardLED+0x6a>
+  d6:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00010000; // here only PC4 is at +5V rest at 0V
+  d8:	80 e1       	ldi	r24, 0x10	; 16
+  da:	85 bb       	out	0x15, r24	; 21
+  dc:	2f ef       	ldi	r18, 0xFF	; 255
+  de:	80 e7       	ldi	r24, 0x70	; 112
+  e0:	92 e0       	ldi	r25, 0x02	; 2
+  e2:	21 50       	subi	r18, 0x01	; 1
+  e4:	80 40       	sbci	r24, 0x00	; 0
+  e6:	90 40       	sbci	r25, 0x00	; 0
+  e8:	e1 f7       	brne	.-8      	; 0xe2 <downwardLED+0x76>
+  ea:	00 c0       	rjmp	.+0      	; 0xec <downwardLED+0x80>
+  ec:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00100000; // here only PC5 is at +5V rest at 0V
+  ee:	80 e2       	ldi	r24, 0x20	; 32
+  f0:	85 bb       	out	0x15, r24	; 21
+  f2:	2f ef       	ldi	r18, 0xFF	; 255
+  f4:	80 e7       	ldi	r24, 0x70	; 112
+  f6:	92 e0       	ldi	r25, 0x02	; 2
+  f8:	21 50       	subi	r18, 0x01	; 1
+  fa:	80 40       	sbci	r24, 0x00	; 0
+  fc:	90 40       	sbci	r25, 0x00	; 0
+  fe:	e1 f7       	brne	.-8      	; 0xf8 <downwardLED+0x8c>
+ 100:	00 c0       	rjmp	.+0      	; 0x102 <downwardLED+0x96>
+ 102:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b01000000; // here only PC6 is at +5V rest at 0V
+ 104:	80 e4       	ldi	r24, 0x40	; 64
+ 106:	85 bb       	out	0x15, r24	; 21
+ 108:	2f ef       	ldi	r18, 0xFF	; 255
+ 10a:	80 e7       	ldi	r24, 0x70	; 112
+ 10c:	92 e0       	ldi	r25, 0x02	; 2
+ 10e:	21 50       	subi	r18, 0x01	; 1
+ 110:	80 40       	sbci	r24, 0x00	; 0
+ 112:	90 40       	sbci	r25, 0x00	; 0
+ 114:	e1 f7       	brne	.-8      	; 0x10e <downwardLED+0xa2>
+ 116:	00 c0       	rjmp	.+0      	; 0x118 <downwardLED+0xac>
+ 118:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b10000000; // here only PC7 is at +5V rest at 0V
+ 11a:	80 e8       	ldi	r24, 0x80	; 128
+ 11c:	85 bb       	out	0x15, r24	; 21
+ 11e:	2f ef       	ldi	r18, 0xFF	; 255
+ 120:	80 e7       	ldi	r24, 0x70	; 112
+ 122:	92 e0       	ldi	r25, 0x02	; 2
+ 124:	21 50       	subi	r18, 0x01	; 1
+ 126:	80 40       	sbci	r24, 0x00	; 0
+ 128:	90 40       	sbci	r25, 0x00	; 0
+ 12a:	e1 f7       	brne	.-8      	; 0x124 <downwardLED+0xb8>
+ 12c:	00 c0       	rjmp	.+0      	; 0x12e <downwardLED+0xc2>
+ 12e:	00 00       	nop
+ 130:	08 95       	ret
+
+00000132 <upwardLED>:
+	_delay_ms(100);
+}
+
+void upwardLED()
+{
+	PORTC = 0b00000000; // here all pins in PORTC is at 0V
+ 132:	15 ba       	out	0x15, r1	; 21
+ 134:	2f ef       	ldi	r18, 0xFF	; 255
+ 136:	80 e7       	ldi	r24, 0x70	; 112
+ 138:	92 e0       	ldi	r25, 0x02	; 2
+ 13a:	21 50       	subi	r18, 0x01	; 1
+ 13c:	80 40       	sbci	r24, 0x00	; 0
+ 13e:	90 40       	sbci	r25, 0x00	; 0
+ 140:	e1 f7       	brne	.-8      	; 0x13a <upwardLED+0x8>
+ 142:	00 c0       	rjmp	.+0      	; 0x144 <upwardLED+0x12>
+ 144:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b10000000; // here only PC7 is at +5V rest at 0V
+ 146:	80 e8       	ldi	r24, 0x80	; 128
+ 148:	85 bb       	out	0x15, r24	; 21
+ 14a:	2f ef       	ldi	r18, 0xFF	; 255
+ 14c:	80 e7       	ldi	r24, 0x70	; 112
+ 14e:	92 e0       	ldi	r25, 0x02	; 2
+ 150:	21 50       	subi	r18, 0x01	; 1
+ 152:	80 40       	sbci	r24, 0x00	; 0
+ 154:	90 40       	sbci	r25, 0x00	; 0
+ 156:	e1 f7       	brne	.-8      	; 0x150 <upwardLED+0x1e>
+ 158:	00 c0       	rjmp	.+0      	; 0x15a <upwardLED+0x28>
+ 15a:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b01000000; // here only PC6 is at +5V rest at 0V
+ 15c:	80 e4       	ldi	r24, 0x40	; 64
+ 15e:	85 bb       	out	0x15, r24	; 21
+ 160:	2f ef       	ldi	r18, 0xFF	; 255
+ 162:	80 e7       	ldi	r24, 0x70	; 112
+ 164:	92 e0       	ldi	r25, 0x02	; 2
+ 166:	21 50       	subi	r18, 0x01	; 1
+ 168:	80 40       	sbci	r24, 0x00	; 0
+ 16a:	90 40       	sbci	r25, 0x00	; 0
+ 16c:	e1 f7       	brne	.-8      	; 0x166 <upwardLED+0x34>
+ 16e:	00 c0       	rjmp	.+0      	; 0x170 <upwardLED+0x3e>
+ 170:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00100000; // here only PC5 is at +5V rest at 0V
+ 172:	80 e2       	ldi	r24, 0x20	; 32
+ 174:	85 bb       	out	0x15, r24	; 21
+ 176:	2f ef       	ldi	r18, 0xFF	; 255
+ 178:	80 e7       	ldi	r24, 0x70	; 112
+ 17a:	92 e0       	ldi	r25, 0x02	; 2
+ 17c:	21 50       	subi	r18, 0x01	; 1
+ 17e:	80 40       	sbci	r24, 0x00	; 0
+ 180:	90 40       	sbci	r25, 0x00	; 0
+ 182:	e1 f7       	brne	.-8      	; 0x17c <upwardLED+0x4a>
+ 184:	00 c0       	rjmp	.+0      	; 0x186 <upwardLED+0x54>
+ 186:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00010000; // here only PC4 is at +5V rest at 0V
+ 188:	80 e1       	ldi	r24, 0x10	; 16
+ 18a:	85 bb       	out	0x15, r24	; 21
+ 18c:	2f ef       	ldi	r18, 0xFF	; 255
+ 18e:	80 e7       	ldi	r24, 0x70	; 112
+ 190:	92 e0       	ldi	r25, 0x02	; 2
+ 192:	21 50       	subi	r18, 0x01	; 1
+ 194:	80 40       	sbci	r24, 0x00	; 0
+ 196:	90 40       	sbci	r25, 0x00	; 0
+ 198:	e1 f7       	brne	.-8      	; 0x192 <upwardLED+0x60>
+ 19a:	00 c0       	rjmp	.+0      	; 0x19c <upwardLED+0x6a>
+ 19c:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00001000; // here only PC3 is at +5V rest at 0V
+ 19e:	88 e0       	ldi	r24, 0x08	; 8
+ 1a0:	85 bb       	out	0x15, r24	; 21
+ 1a2:	2f ef       	ldi	r18, 0xFF	; 255
+ 1a4:	80 e7       	ldi	r24, 0x70	; 112
+ 1a6:	92 e0       	ldi	r25, 0x02	; 2
+ 1a8:	21 50       	subi	r18, 0x01	; 1
+ 1aa:	80 40       	sbci	r24, 0x00	; 0
+ 1ac:	90 40       	sbci	r25, 0x00	; 0
+ 1ae:	e1 f7       	brne	.-8      	; 0x1a8 <upwardLED+0x76>
+ 1b0:	00 c0       	rjmp	.+0      	; 0x1b2 <upwardLED+0x80>
+ 1b2:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00000100; // here only PC2 is at +5V rest at 0V
+ 1b4:	84 e0       	ldi	r24, 0x04	; 4
+ 1b6:	85 bb       	out	0x15, r24	; 21
+ 1b8:	2f ef       	ldi	r18, 0xFF	; 255
+ 1ba:	80 e7       	ldi	r24, 0x70	; 112
+ 1bc:	92 e0       	ldi	r25, 0x02	; 2
+ 1be:	21 50       	subi	r18, 0x01	; 1
+ 1c0:	80 40       	sbci	r24, 0x00	; 0
+ 1c2:	90 40       	sbci	r25, 0x00	; 0
+ 1c4:	e1 f7       	brne	.-8      	; 0x1be <upwardLED+0x8c>
+ 1c6:	00 c0       	rjmp	.+0      	; 0x1c8 <upwardLED+0x96>
+ 1c8:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00000010; // here only PC1 is at +5V rest at 0V
+ 1ca:	82 e0       	ldi	r24, 0x02	; 2
+ 1cc:	85 bb       	out	0x15, r24	; 21
+ 1ce:	2f ef       	ldi	r18, 0xFF	; 255
+ 1d0:	80 e7       	ldi	r24, 0x70	; 112
+ 1d2:	92 e0       	ldi	r25, 0x02	; 2
+ 1d4:	21 50       	subi	r18, 0x01	; 1
+ 1d6:	80 40       	sbci	r24, 0x00	; 0
+ 1d8:	90 40       	sbci	r25, 0x00	; 0
+ 1da:	e1 f7       	brne	.-8      	; 0x1d4 <upwardLED+0xa2>
+ 1dc:	00 c0       	rjmp	.+0      	; 0x1de <upwardLED+0xac>
+ 1de:	00 00       	nop
+	_delay_ms(100);
+	PORTC = 0b00000001; // here only PC0 is at +5V rest at 0V
+ 1e0:	81 e0       	ldi	r24, 0x01	; 1
+ 1e2:	85 bb       	out	0x15, r24	; 21
+ 1e4:	2f ef       	ldi	r18, 0xFF	; 255
+ 1e6:	80 e7       	ldi	r24, 0x70	; 112
+ 1e8:	92 e0       	ldi	r25, 0x02	; 2
+ 1ea:	21 50       	subi	r18, 0x01	; 1
+ 1ec:	80 40       	sbci	r24, 0x00	; 0
+ 1ee:	90 40       	sbci	r25, 0x00	; 0
+ 1f0:	e1 f7       	brne	.-8      	; 0x1ea <upwardLED+0xb8>
+ 1f2:	00 c0       	rjmp	.+0      	; 0x1f4 <upwardLED+0xc2>
+ 1f4:	00 00       	nop
+ 1f6:	08 95       	ret
+
+000001f8 <main>:
+	_delay_ms(100);
+}
+
+int main(void)
+{
+	DDRC = 0b11111111; // ALL PORTC PINS ARE OUTPUT
+ 1f8:	8f ef       	ldi	r24, 0xFF	; 255
+ 1fa:	84 bb       	out	0x14, r24	; 20
+	DDRA = 0b00000000; // PA0 and PA7 will be INPUT   
+ 1fc:	1a ba       	out	0x1a, r1	; 26
+	while (1) 
+    {
+		if (PINA == 0b00000001)
+ 1fe:	89 b3       	in	r24, 0x19	; 25
+ 200:	81 30       	cpi	r24, 0x01	; 1
+ 202:	19 f4       	brne	.+6      	; 0x20a <__EEPROM_REGION_LENGTH__+0xa>
+		{
+			upwardLED();
+ 204:	0e 94 99 00 	call	0x132	; 0x132 <upwardLED>
+ 208:	fa cf       	rjmp	.-12     	; 0x1fe <main+0x6>
+		}
+		else if (PINA == 0b10000000)
+ 20a:	89 b3       	in	r24, 0x19	; 25
+ 20c:	80 38       	cpi	r24, 0x80	; 128
+ 20e:	19 f4       	brne	.+6      	; 0x216 <__EEPROM_REGION_LENGTH__+0x16>
+		{
+			downwardLED();
+ 210:	0e 94 36 00 	call	0x6c	; 0x6c <downwardLED>
+ 214:	f4 cf       	rjmp	.-24     	; 0x1fe <main+0x6>
+		}
+		else
+		{
+			PORTC = 0b00000000;
+ 216:	15 ba       	out	0x15, r1	; 21
+ 218:	f2 cf       	rjmp	.-28     	; 0x1fe <main+0x6>
+
+0000021a <_exit>:
+ 21a:	f8 94       	cli
+
+0000021c <__stop_program>:
+ 21c:	ff cf       	rjmp	.-2      	; 0x21c <__stop_program>
