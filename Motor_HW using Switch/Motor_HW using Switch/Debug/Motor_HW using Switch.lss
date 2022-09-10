@@ -1,0 +1,153 @@
+
+Motor_HW using Switch.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000cc  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000120  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  00000120  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000150  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000020  00000000  00000000  0000018c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000005b6  00000000  00000000  000001ac  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000053d  00000000  00000000  00000762  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000211  00000000  00000000  00000c9f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000024  00000000  00000000  00000eb0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000002f5  00000000  00000000  00000ed4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000010  00000000  00000000  000011c9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 36 00 	call	0x6c	; 0x6c <main>
+  64:	0c 94 64 00 	jmp	0xc8	; 0xc8 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <main>:
+
+
+int main(void)
+{
+	while(1){
+		DDRC = 0b11000011;
+  6c:	83 ec       	ldi	r24, 0xC3	; 195
+  6e:	84 bb       	out	0x14, r24	; 20
+		DDRA = 0b00000000;
+  70:	1a ba       	out	0x1a, r1	; 26
+		if(PINA & 0b00000001)
+  72:	c8 9b       	sbis	0x19, 0	; 25
+  74:	07 c0       	rjmp	.+14     	; 0x84 <main+0x18>
+		{ // switch-1 on and motor-1 clockwise
+			PORTC |= 0b00000001;
+  76:	85 b3       	in	r24, 0x15	; 21
+  78:	81 60       	ori	r24, 0x01	; 1
+  7a:	85 bb       	out	0x15, r24	; 21
+			PORTC &= ~(0b00000010);
+  7c:	85 b3       	in	r24, 0x15	; 21
+  7e:	8d 7f       	andi	r24, 0xFD	; 253
+  80:	85 bb       	out	0x15, r24	; 21
+  82:	0c c0       	rjmp	.+24     	; 0x9c <main+0x30>
+		}
+		else if(PINA & 0b00000100)
+  84:	ca 9b       	sbis	0x19, 2	; 25
+  86:	07 c0       	rjmp	.+14     	; 0x96 <main+0x2a>
+		{ // switch-2 on and motor-1  anti-clockwise
+			PORTC |= 0b00000010;
+  88:	85 b3       	in	r24, 0x15	; 21
+  8a:	82 60       	ori	r24, 0x02	; 2
+  8c:	85 bb       	out	0x15, r24	; 21
+			PORTC &= ~(0b00000001);
+  8e:	85 b3       	in	r24, 0x15	; 21
+  90:	8e 7f       	andi	r24, 0xFE	; 254
+  92:	85 bb       	out	0x15, r24	; 21
+  94:	03 c0       	rjmp	.+6      	; 0x9c <main+0x30>
+		}
+		else
+		{
+			PORTC &= ~(0b00000011);
+  96:	85 b3       	in	r24, 0x15	; 21
+  98:	8c 7f       	andi	r24, 0xFC	; 252
+  9a:	85 bb       	out	0x15, r24	; 21
+		}
+		if(PINA & 0b00010000)
+  9c:	cc 9b       	sbis	0x19, 4	; 25
+  9e:	07 c0       	rjmp	.+14     	; 0xae <main+0x42>
+		{ // switch-3 on and motor-2 clockwise
+			PORTC |= 0b01000000;
+  a0:	85 b3       	in	r24, 0x15	; 21
+  a2:	80 64       	ori	r24, 0x40	; 64
+  a4:	85 bb       	out	0x15, r24	; 21
+			PORTC &= ~(0b10000000);
+  a6:	85 b3       	in	r24, 0x15	; 21
+  a8:	8f 77       	andi	r24, 0x7F	; 127
+  aa:	85 bb       	out	0x15, r24	; 21
+  ac:	df cf       	rjmp	.-66     	; 0x6c <main>
+		}
+		else if(PINA & 0b01000000)
+  ae:	ce 9b       	sbis	0x19, 6	; 25
+  b0:	07 c0       	rjmp	.+14     	; 0xc0 <main+0x54>
+		{ // switch-4 on and motor-2  anti-clockwise
+			PORTC |= 0b10000000;
+  b2:	85 b3       	in	r24, 0x15	; 21
+  b4:	80 68       	ori	r24, 0x80	; 128
+  b6:	85 bb       	out	0x15, r24	; 21
+			PORTC &= ~(0b01000000);
+  b8:	85 b3       	in	r24, 0x15	; 21
+  ba:	8f 7b       	andi	r24, 0xBF	; 191
+  bc:	85 bb       	out	0x15, r24	; 21
+  be:	d6 cf       	rjmp	.-84     	; 0x6c <main>
+		}		
+		else
+		{
+			PORTC &= ~(0b11000000);
+  c0:	85 b3       	in	r24, 0x15	; 21
+  c2:	8f 73       	andi	r24, 0x3F	; 63
+  c4:	85 bb       	out	0x15, r24	; 21
+  c6:	d2 cf       	rjmp	.-92     	; 0x6c <main>
+
+000000c8 <_exit>:
+  c8:	f8 94       	cli
+
+000000ca <__stop_program>:
+  ca:	ff cf       	rjmp	.-2      	; 0xca <__stop_program>
