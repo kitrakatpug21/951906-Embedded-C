@@ -1,0 +1,335 @@
+
+Stepper Motor Interface.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000001ea  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  0000023e  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  0000023e  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000270  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000030  00000000  00000000  000002ac  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000009e2  00000000  00000000  000002dc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000005d7  00000000  00000000  00000cbe  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000380  00000000  00000000  00001295  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000044  00000000  00000000  00001618  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000352  00000000  00000000  0000165c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000480  00000000  00000000  000019ae  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000020  00000000  00000000  00001e2e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 e8 00 	call	0x1d0	; 0x1d0 <main>
+  64:	0c 94 f3 00 	jmp	0x1e6	; 0x1e6 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <ClockWise>:
+#include <util/delay.h>
+
+void ClockWise()
+{
+	// 45 degree
+	PORTC = 0b00000010; // A is ON
+  6c:	82 e0       	ldi	r24, 0x02	; 2
+  6e:	85 bb       	out	0x15, r24	; 21
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  70:	2f ef       	ldi	r18, 0xFF	; 255
+  72:	89 e6       	ldi	r24, 0x69	; 105
+  74:	98 e1       	ldi	r25, 0x18	; 24
+  76:	21 50       	subi	r18, 0x01	; 1
+  78:	80 40       	sbci	r24, 0x00	; 0
+  7a:	90 40       	sbci	r25, 0x00	; 0
+  7c:	e1 f7       	brne	.-8      	; 0x76 <ClockWise+0xa>
+  7e:	00 c0       	rjmp	.+0      	; 0x80 <ClockWise+0x14>
+  80:	00 00       	nop
+	_delay_ms(1000);
+	// 90 degree
+	PORTC = 0b00000011; // A and B are ON
+  82:	83 e0       	ldi	r24, 0x03	; 3
+  84:	85 bb       	out	0x15, r24	; 21
+  86:	2f ef       	ldi	r18, 0xFF	; 255
+  88:	89 e6       	ldi	r24, 0x69	; 105
+  8a:	98 e1       	ldi	r25, 0x18	; 24
+  8c:	21 50       	subi	r18, 0x01	; 1
+  8e:	80 40       	sbci	r24, 0x00	; 0
+  90:	90 40       	sbci	r25, 0x00	; 0
+  92:	e1 f7       	brne	.-8      	; 0x8c <ClockWise+0x20>
+  94:	00 c0       	rjmp	.+0      	; 0x96 <ClockWise+0x2a>
+  96:	00 00       	nop
+	_delay_ms(1000);
+	// 135 degree
+	PORTC = 0b00000001; // B is ON
+  98:	81 e0       	ldi	r24, 0x01	; 1
+  9a:	85 bb       	out	0x15, r24	; 21
+  9c:	2f ef       	ldi	r18, 0xFF	; 255
+  9e:	89 e6       	ldi	r24, 0x69	; 105
+  a0:	98 e1       	ldi	r25, 0x18	; 24
+  a2:	21 50       	subi	r18, 0x01	; 1
+  a4:	80 40       	sbci	r24, 0x00	; 0
+  a6:	90 40       	sbci	r25, 0x00	; 0
+  a8:	e1 f7       	brne	.-8      	; 0xa2 <ClockWise+0x36>
+  aa:	00 c0       	rjmp	.+0      	; 0xac <ClockWise+0x40>
+  ac:	00 00       	nop
+	_delay_ms(1000);
+	// 180 degree
+	PORTC = 0b10000001; // B and C are ON
+  ae:	81 e8       	ldi	r24, 0x81	; 129
+  b0:	85 bb       	out	0x15, r24	; 21
+  b2:	2f ef       	ldi	r18, 0xFF	; 255
+  b4:	89 e6       	ldi	r24, 0x69	; 105
+  b6:	98 e1       	ldi	r25, 0x18	; 24
+  b8:	21 50       	subi	r18, 0x01	; 1
+  ba:	80 40       	sbci	r24, 0x00	; 0
+  bc:	90 40       	sbci	r25, 0x00	; 0
+  be:	e1 f7       	brne	.-8      	; 0xb8 <ClockWise+0x4c>
+  c0:	00 c0       	rjmp	.+0      	; 0xc2 <ClockWise+0x56>
+  c2:	00 00       	nop
+	_delay_ms(1000);
+	// 225 degree
+	PORTC = 0b10000000; // C is ON
+  c4:	80 e8       	ldi	r24, 0x80	; 128
+  c6:	85 bb       	out	0x15, r24	; 21
+  c8:	2f ef       	ldi	r18, 0xFF	; 255
+  ca:	89 e6       	ldi	r24, 0x69	; 105
+  cc:	98 e1       	ldi	r25, 0x18	; 24
+  ce:	21 50       	subi	r18, 0x01	; 1
+  d0:	80 40       	sbci	r24, 0x00	; 0
+  d2:	90 40       	sbci	r25, 0x00	; 0
+  d4:	e1 f7       	brne	.-8      	; 0xce <ClockWise+0x62>
+  d6:	00 c0       	rjmp	.+0      	; 0xd8 <ClockWise+0x6c>
+  d8:	00 00       	nop
+	_delay_ms(1000);
+	// 270 degree
+	PORTC = 0b11000000; // C and D are ON
+  da:	80 ec       	ldi	r24, 0xC0	; 192
+  dc:	85 bb       	out	0x15, r24	; 21
+  de:	2f ef       	ldi	r18, 0xFF	; 255
+  e0:	89 e6       	ldi	r24, 0x69	; 105
+  e2:	98 e1       	ldi	r25, 0x18	; 24
+  e4:	21 50       	subi	r18, 0x01	; 1
+  e6:	80 40       	sbci	r24, 0x00	; 0
+  e8:	90 40       	sbci	r25, 0x00	; 0
+  ea:	e1 f7       	brne	.-8      	; 0xe4 <ClockWise+0x78>
+  ec:	00 c0       	rjmp	.+0      	; 0xee <ClockWise+0x82>
+  ee:	00 00       	nop
+	_delay_ms(1000);
+	// 315 degree
+	PORTC = 0b01000000; // D is ON
+  f0:	80 e4       	ldi	r24, 0x40	; 64
+  f2:	85 bb       	out	0x15, r24	; 21
+  f4:	2f ef       	ldi	r18, 0xFF	; 255
+  f6:	89 e6       	ldi	r24, 0x69	; 105
+  f8:	98 e1       	ldi	r25, 0x18	; 24
+  fa:	21 50       	subi	r18, 0x01	; 1
+  fc:	80 40       	sbci	r24, 0x00	; 0
+  fe:	90 40       	sbci	r25, 0x00	; 0
+ 100:	e1 f7       	brne	.-8      	; 0xfa <ClockWise+0x8e>
+ 102:	00 c0       	rjmp	.+0      	; 0x104 <ClockWise+0x98>
+ 104:	00 00       	nop
+	_delay_ms(1000);
+	// 0 degree
+	PORTC = 0b01000010; // A and D are ON
+ 106:	82 e4       	ldi	r24, 0x42	; 66
+ 108:	85 bb       	out	0x15, r24	; 21
+ 10a:	2f ef       	ldi	r18, 0xFF	; 255
+ 10c:	89 e6       	ldi	r24, 0x69	; 105
+ 10e:	98 e1       	ldi	r25, 0x18	; 24
+ 110:	21 50       	subi	r18, 0x01	; 1
+ 112:	80 40       	sbci	r24, 0x00	; 0
+ 114:	90 40       	sbci	r25, 0x00	; 0
+ 116:	e1 f7       	brne	.-8      	; 0x110 <ClockWise+0xa4>
+ 118:	00 c0       	rjmp	.+0      	; 0x11a <ClockWise+0xae>
+ 11a:	00 00       	nop
+ 11c:	08 95       	ret
+
+0000011e <AntiClockWise>:
+}
+
+void AntiClockWise()
+{
+	// 315 degree (-45 degree)
+	PORTC = 0b01000000; // D is ON
+ 11e:	80 e4       	ldi	r24, 0x40	; 64
+ 120:	85 bb       	out	0x15, r24	; 21
+ 122:	2f ef       	ldi	r18, 0xFF	; 255
+ 124:	89 e6       	ldi	r24, 0x69	; 105
+ 126:	98 e1       	ldi	r25, 0x18	; 24
+ 128:	21 50       	subi	r18, 0x01	; 1
+ 12a:	80 40       	sbci	r24, 0x00	; 0
+ 12c:	90 40       	sbci	r25, 0x00	; 0
+ 12e:	e1 f7       	brne	.-8      	; 0x128 <AntiClockWise+0xa>
+ 130:	00 c0       	rjmp	.+0      	; 0x132 <AntiClockWise+0x14>
+ 132:	00 00       	nop
+	_delay_ms(1000);
+	// 270 degree (-90 degree)
+	PORTC = 0b11000000; // C and D are ON
+ 134:	80 ec       	ldi	r24, 0xC0	; 192
+ 136:	85 bb       	out	0x15, r24	; 21
+ 138:	2f ef       	ldi	r18, 0xFF	; 255
+ 13a:	89 e6       	ldi	r24, 0x69	; 105
+ 13c:	98 e1       	ldi	r25, 0x18	; 24
+ 13e:	21 50       	subi	r18, 0x01	; 1
+ 140:	80 40       	sbci	r24, 0x00	; 0
+ 142:	90 40       	sbci	r25, 0x00	; 0
+ 144:	e1 f7       	brne	.-8      	; 0x13e <AntiClockWise+0x20>
+ 146:	00 c0       	rjmp	.+0      	; 0x148 <AntiClockWise+0x2a>
+ 148:	00 00       	nop
+	_delay_ms(1000);
+	// 225 degree (-135 degree)
+	PORTC = 0b10000000; // C is ON
+ 14a:	80 e8       	ldi	r24, 0x80	; 128
+ 14c:	85 bb       	out	0x15, r24	; 21
+ 14e:	2f ef       	ldi	r18, 0xFF	; 255
+ 150:	89 e6       	ldi	r24, 0x69	; 105
+ 152:	98 e1       	ldi	r25, 0x18	; 24
+ 154:	21 50       	subi	r18, 0x01	; 1
+ 156:	80 40       	sbci	r24, 0x00	; 0
+ 158:	90 40       	sbci	r25, 0x00	; 0
+ 15a:	e1 f7       	brne	.-8      	; 0x154 <AntiClockWise+0x36>
+ 15c:	00 c0       	rjmp	.+0      	; 0x15e <AntiClockWise+0x40>
+ 15e:	00 00       	nop
+	_delay_ms(1000);
+	// 180 degree (-180 degree)
+	PORTC = 0b10000001; // B and C are ON
+ 160:	81 e8       	ldi	r24, 0x81	; 129
+ 162:	85 bb       	out	0x15, r24	; 21
+ 164:	2f ef       	ldi	r18, 0xFF	; 255
+ 166:	89 e6       	ldi	r24, 0x69	; 105
+ 168:	98 e1       	ldi	r25, 0x18	; 24
+ 16a:	21 50       	subi	r18, 0x01	; 1
+ 16c:	80 40       	sbci	r24, 0x00	; 0
+ 16e:	90 40       	sbci	r25, 0x00	; 0
+ 170:	e1 f7       	brne	.-8      	; 0x16a <AntiClockWise+0x4c>
+ 172:	00 c0       	rjmp	.+0      	; 0x174 <AntiClockWise+0x56>
+ 174:	00 00       	nop
+	_delay_ms(1000);
+	// 135 degree (-225 degree)
+	PORTC = 0b00000001; // B is ON
+ 176:	81 e0       	ldi	r24, 0x01	; 1
+ 178:	85 bb       	out	0x15, r24	; 21
+ 17a:	2f ef       	ldi	r18, 0xFF	; 255
+ 17c:	89 e6       	ldi	r24, 0x69	; 105
+ 17e:	98 e1       	ldi	r25, 0x18	; 24
+ 180:	21 50       	subi	r18, 0x01	; 1
+ 182:	80 40       	sbci	r24, 0x00	; 0
+ 184:	90 40       	sbci	r25, 0x00	; 0
+ 186:	e1 f7       	brne	.-8      	; 0x180 <AntiClockWise+0x62>
+ 188:	00 c0       	rjmp	.+0      	; 0x18a <AntiClockWise+0x6c>
+ 18a:	00 00       	nop
+	_delay_ms(1000);
+	// 90 degree (-270 degree)
+	PORTC = 0b00000011; // A and B are ON
+ 18c:	83 e0       	ldi	r24, 0x03	; 3
+ 18e:	85 bb       	out	0x15, r24	; 21
+ 190:	2f ef       	ldi	r18, 0xFF	; 255
+ 192:	89 e6       	ldi	r24, 0x69	; 105
+ 194:	98 e1       	ldi	r25, 0x18	; 24
+ 196:	21 50       	subi	r18, 0x01	; 1
+ 198:	80 40       	sbci	r24, 0x00	; 0
+ 19a:	90 40       	sbci	r25, 0x00	; 0
+ 19c:	e1 f7       	brne	.-8      	; 0x196 <AntiClockWise+0x78>
+ 19e:	00 c0       	rjmp	.+0      	; 0x1a0 <AntiClockWise+0x82>
+ 1a0:	00 00       	nop
+	_delay_ms(1000);
+	// 45 degree (-315 degree)
+	PORTC = 0b00000010; // A is ON
+ 1a2:	82 e0       	ldi	r24, 0x02	; 2
+ 1a4:	85 bb       	out	0x15, r24	; 21
+ 1a6:	2f ef       	ldi	r18, 0xFF	; 255
+ 1a8:	89 e6       	ldi	r24, 0x69	; 105
+ 1aa:	98 e1       	ldi	r25, 0x18	; 24
+ 1ac:	21 50       	subi	r18, 0x01	; 1
+ 1ae:	80 40       	sbci	r24, 0x00	; 0
+ 1b0:	90 40       	sbci	r25, 0x00	; 0
+ 1b2:	e1 f7       	brne	.-8      	; 0x1ac <AntiClockWise+0x8e>
+ 1b4:	00 c0       	rjmp	.+0      	; 0x1b6 <AntiClockWise+0x98>
+ 1b6:	00 00       	nop
+	_delay_ms(1000);
+	// 0 degree
+	PORTC = 0b01000010; // A and D are ON
+ 1b8:	82 e4       	ldi	r24, 0x42	; 66
+ 1ba:	85 bb       	out	0x15, r24	; 21
+ 1bc:	2f ef       	ldi	r18, 0xFF	; 255
+ 1be:	89 e6       	ldi	r24, 0x69	; 105
+ 1c0:	98 e1       	ldi	r25, 0x18	; 24
+ 1c2:	21 50       	subi	r18, 0x01	; 1
+ 1c4:	80 40       	sbci	r24, 0x00	; 0
+ 1c6:	90 40       	sbci	r25, 0x00	; 0
+ 1c8:	e1 f7       	brne	.-8      	; 0x1c2 <AntiClockWise+0xa4>
+ 1ca:	00 c0       	rjmp	.+0      	; 0x1cc <AntiClockWise+0xae>
+ 1cc:	00 00       	nop
+ 1ce:	08 95       	ret
+
+000001d0 <main>:
+	_delay_ms(1000);
+}
+int main(void)
+{
+    DDRC = 0b11000011;// PC0, PC1, PC6, PC7 as output
+ 1d0:	83 ec       	ldi	r24, 0xC3	; 195
+ 1d2:	84 bb       	out	0x14, r24	; 20
+	while (1) 
+    {
+		ClockWise();
+ 1d4:	0e 94 36 00 	call	0x6c	; 0x6c <ClockWise>
+		AntiClockWise();
+ 1d8:	0e 94 8f 00 	call	0x11e	; 0x11e <AntiClockWise>
+		AntiClockWise();
+ 1dc:	0e 94 8f 00 	call	0x11e	; 0x11e <AntiClockWise>
+		ClockWise();
+ 1e0:	0e 94 36 00 	call	0x6c	; 0x6c <ClockWise>
+ 1e4:	f7 cf       	rjmp	.-18     	; 0x1d4 <main+0x4>
+
+000001e6 <_exit>:
+ 1e6:	f8 94       	cli
+
+000001e8 <__stop_program>:
+ 1e8:	ff cf       	rjmp	.-2      	; 0x1e8 <__stop_program>
